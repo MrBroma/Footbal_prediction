@@ -25,7 +25,6 @@ for link in soup.find_all("a"):
         full_url = urljoin(root_url, href)
         urls.append(full_url)
 
-
 # create the data folder if it doesn't exist
 if not os.path.exists("data"):
     os.makedirs("data")
@@ -41,47 +40,3 @@ for link in urls[0:5]:
         f.write(response.content)
         print(f"File {filename} saved in data folder")
 
-# find the common columns in all csv files from data folder and put it in a variable
-common_columns = set()
-for filename in os.listdir("data"):
-    filepath = os.path.join("data", filename)
-    df = pd.read_csv(filepath)
-    common_columns = common_columns.intersection(set(df.columns)) if common_columns else set(df.columns)
-
-print(common_columns)
-
-
-
-########################################################################################################
-
-
-dfs = []
-first_file = True
-common_columns = None
-
-# Iterate over all files in the "data" folder
-for filename in os.listdir("data"):
-    filepath = os.path.join("data", filename)
-    
-    # Read each CSV file into a DataFrame
-    df = pd.read_csv(filepath)
-    
-    if first_file:
-        # For the first file, save the columns to be used as reference
-        common_columns = df.columns
-        df = df[common_columns]  # Keep the columns in the order of the first file
-        first_file = False
-    else:
-        # For subsequent files, retain only the columns present in the first file
-        df = df.reindex(columns=common_columns)
-    
-    dfs.append(df)  # Add the processed DataFrame to the list
-
-# Concatenate all DataFrames, ignoring the index to reset it
-merged_df = pd.concat(dfs, ignore_index=True)
-
-# Save the merged DataFrame to a new CSV file
-merged_filepath = os.path.join("data", "merge.csv")
-merged_df.to_csv(merged_filepath, index=False)
-
-print(f"Merged file saved as merge.csv in data folder")
