@@ -11,8 +11,7 @@ RUN dnf -y update \
 RUN pip install --no-cache-dir mysql-connector-python
 
 # Create necessary directories and set permissions
-RUN mkdir -p /opt/airflow/logs /opt/airflow/dags /opt/airflow/plugins \
-    && chmod -R 777 ./logs ./dags ./plugins
+RUN mkdir -p /opt/airflow/logs /opt/airflow/dags /opt/airflow/plugins
 
 # Switch back to the airflow user
 USER airflow

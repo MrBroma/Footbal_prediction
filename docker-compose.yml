@@ -77,3 +77,4 @@ services:
 
 volumes:
   mysql_data:
+    driver: local  # Docker will manage this volume
