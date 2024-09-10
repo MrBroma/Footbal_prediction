@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from datetime import datetime
 
 # Path to the folder containing the CSV files
 folder = './data'
@@ -23,3 +24,4 @@ for file in os.listdir(folder):
             print(f"Empty rows removed in: {file}")
 
 print("Processing completed.")
+
