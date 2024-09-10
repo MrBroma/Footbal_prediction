@@ -27,18 +27,6 @@ def scrape_data():
             full_url = urljoin(root_url, href)
             urls.append(full_url)
 
-<<<<<<< HEAD
-for link in urls[0:6]:
-    # request the csv file
-    response = requests.get(link)
-    print(link)
-    # save the csv file
-    filename = link.split("/")[-2] + ".csv"
-    filepath = os.path.join("data", filename)
-    with open(filepath, "wb") as f:
-        f.write(response.content)
-        print(f"File {filename} saved in data folder")
-=======
     # create the data folder if it doesn't exist
     if not os.path.exists("data"):
         os.makedirs("data")
@@ -53,5 +41,4 @@ for link in urls[0:6]:
         with open(filepath, "wb") as f:
             f.write(response.content)
             print(f"File {filename} saved in data folder")
->>>>>>> f1383f5db435dfe967dd3d677bdef92628a085d2
 
