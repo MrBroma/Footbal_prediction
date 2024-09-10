@@ -29,7 +29,7 @@ for link in soup.find_all("a"):
 if not os.path.exists("data"):
     os.makedirs("data")
 
-for link in urls[0:5]:
+for link in urls[0:6]:
     # request the csv file
     response = requests.get(link)
     print(link)
