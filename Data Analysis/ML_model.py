@@ -17,7 +17,7 @@ df['season_encoded'] = le_season.fit_transform(df['season'])
 
 # Prepare features and target variable
 features = ['season_encoded', 'HomeTeam_encoded', 'AwayTeam_encoded', 'HomeTeamStrength', 'AwayTeamStrength', 
-            'avgHG', 'avgAG', 'avgHHG', 'avgHAG', 'avgHST', 'avgAST', 'avgHR', 'avgAR', 'FTR']
+            'avgHG', 'avgAG', 'avgHHG', 'avgHAG', 'avgHST', 'avgAST','FTR']
 df_ML = df[features]
 
 #Split the data into training and testing sets
@@ -65,14 +65,12 @@ def get_team_stats(df, season, home_team, away_team):
         'avgHAG': away_team_stats['avgHAG'],
         'avgHST': home_team_stats['avgHST'],
         'avgAST': away_team_stats['avgAST'],
-        'avgHR': home_team_stats['avgHR'],
-        'avgAR': away_team_stats['avgAR']
     }
 
 # Example input parameters
 input_season = 'S2024/2025'
-input_home_team = 'Dender'
-input_away_team = 'Standard'
+input_home_team = 'Cercle Brugge'
+input_away_team = 'Genk'
 
 # Dynamically retrieve stats for both teams
 team_stats = get_team_stats(df, input_season, input_home_team, input_away_team)
@@ -95,9 +93,7 @@ new_input = pd.DataFrame({
     'avgHAG': [team_stats['avgHAG']],
     'avgHST': [team_stats['avgHST']],
     'avgAST': [team_stats['avgAST']],
-    'avgHR': [team_stats['avgHR']],
-    'avgAR': [team_stats['avgAR']],
-    # may add odds here
+    # remove odds and redcard to improve higher accuracy
 })
 print(new_input)
 
