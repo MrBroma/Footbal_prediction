@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 
 # Load dataset
-df = pd.read_csv('./Data Analysis/ML_data.csv')
+df = pd.read_csv('./Streamlit/ML_data.csv')
 
 # Encode 'HomeTeam' and 'AwayTeam'
 le_home = LabelEncoder()
