@@ -1,10 +1,11 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
-import os
-import sys
 
-from scraping_loic import scrape_data
+from utils.scraping_loic import scrape_data
+from utils.clean_csv_loic import clean
+from utils.merge_csv_loic import merge
+from utils.sort_csv_loic import sorting
 
 default_args = {
     'owner': 'airflow',
@@ -19,8 +20,9 @@ dag = DAG(
     'scrape_data_dag',
     default_args=default_args,
     description='A simple DAG to scrape data every minute',
-    schedule_interval='* * * * *',  # Run every minute
-    start_date=datetime(2024, 9, 10),  # Start date of the DAG
+    schedule_interval='*/1 * * * *',
+    start_date=datetime(2024, 9, 12),
+    max_active_tasks=1,
     catchup=False,
 )
 
@@ -30,4 +32,23 @@ run_scraper = PythonOperator(
     dag=dag,
 )
 
-run_scraper
+clean_csv = PythonOperator(
+    task_id='clean_csv',
+    python_callable=clean,
+    dag=dag,
+)
+
+merge_csv = PythonOperator(
+    task_id='merge_csv',
+    python_callable=merge,
+    dag=dag,
+)
+
+final_csv = PythonOperator(
+    task_id='sorting_csv',
+    python_callable=sorting,
+    dag=dag,
+)
+
+run_scraper >> clean_csv >> merge_csv >> final_csv
+

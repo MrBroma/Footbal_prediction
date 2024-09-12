@@ -1,0 +1,1 @@
+print("En attente de données pour entraîner le modèle...")
