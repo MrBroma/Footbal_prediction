@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 
 from utils.scraping_loic import scrape_data
 from utils.clean_csv_loic import clean
-from utils.merge_csv_loic import merge
-from utils.sort_csv_loic import sorting
+from utils.merge_csv_loic import merge_sorting
 
 default_args = {
     'owner': 'airflow',
@@ -38,17 +37,11 @@ clean_csv = PythonOperator(
     dag=dag,
 )
 
-merge_csv = PythonOperator(
-    task_id='merge_csv',
-    python_callable=merge,
-    dag=dag,
-)
-
 final_csv = PythonOperator(
-    task_id='sorting_csv',
-    python_callable=sorting,
+    task_id='merge_sorting',
+    python_callable=merge_sorting,
     dag=dag,
 )
 
-run_scraper >> clean_csv >> merge_csv >> final_csv
+run_scraper >> clean_csv >> final_csv
 

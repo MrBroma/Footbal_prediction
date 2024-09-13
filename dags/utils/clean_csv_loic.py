@@ -21,7 +21,5 @@ def clean():
             # If rows have been removed, save the modified file
             if rows_before != rows_after:
                 df.to_csv(file_path, index=False)
-                print(f"Empty rows removed in: {file}")
 
-    print("Processing completed.")
 
