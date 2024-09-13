@@ -38,7 +38,7 @@ services:
     entrypoint: |
       /bin/bash -c "
       airflow db upgrade;
-      airflow users create --username Broma --password broma1286 --firstname Lalo --lastname Broma --role Admin --email loic.rouaud@gmail.com;
+      airflow users create --username Broma --password broma1286 --firstname Lalo --lastname Broma --role Admin --email airflow_test@mail.com;
       "
     depends_on:
       - postgres

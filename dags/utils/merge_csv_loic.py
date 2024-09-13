@@ -33,3 +33,4 @@ def merge_sorting():
 
     # save the sorted dataframe in a new csv file
     merged_df.to_csv(os.path.join(data_folder, 'final_data_sorted.csv'), index=False)
+
