@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-def merge():
+def merge_sorting():
     data_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../data")
 
     # find the common columns in all csv files from data folder and put it in a list to preserve the column order
@@ -24,7 +24,12 @@ def merge():
     # save dfs into a merge csv file in data folder
     merged_df = pd.concat(dfs, ignore_index=True)
     merged_df = merged_df[common_columns]
-    merged_filepath = os.path.join(data_folder, "merge.csv")
-    merged_df.to_csv(merged_filepath, index=False)
-    print(f"Merged file saved as merge.csv in data folder")
+    
+    # Handle mixed date formats
+    merged_df['Date'] = pd.to_datetime(merged_df['Date'], errors='coerce')
 
+    # sort the values by Date and Time in descending order
+    merged_df = merged_df.sort_values(by=['Date', 'Time'], ascending=False)
+
+    # save the sorted dataframe in a new csv file
+    merged_df.to_csv(os.path.join(data_folder, 'final_data_sorted.csv'), index=False)
