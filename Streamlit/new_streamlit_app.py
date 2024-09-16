@@ -1,8 +1,31 @@
 import streamlit as st
 import pandas as pd
+import base64
 
 # Load the dataset
 df = pd.read_csv('./Streamlit/ML_data.csv')
+
+# Inject CSS for background image
+def set_background(jpg_file):
+    bin_str = get_base64_of_bin_file(jpg_file)
+    page_bg_img = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpeg;base64,{bin_str}");
+        background-size: cover;
+    }}
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Convert image to base64 to use in CSS
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+# Set the background image using the correct path
+set_background('./Streamlit/jupprolg.jpg')
 
 # Combine 'Date' and 'Time' columns into a single 'DateTime' column for proper sorting
 df['DateTime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
@@ -44,6 +67,18 @@ def get_team_last_5_matches_avg_stats(df, team):
 
     return pd.DataFrame(avg_stats)
 
+# Function to style the DataFrame
+def style_dataframe(df):
+    return df.style.set_properties(**{
+        'color': 'white',
+        'font-weight': 'bold',
+        'background-color': 'rgba(0, 0, 0, 0.8)',  # Dark background with slight transparency
+        'text-align': 'center',   # Center align the text
+        'border': '2px solid #ffffff',   # Add a solid white border around each cell
+        'padding': '12px',  # Increase padding for more spacing within cells
+        'font-size': '18px'  # Set larger font size for better readability
+    })
+
 # Sidebar navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.selectbox("Choose a section", ["Upcoming Matches & Odds", "Compare Team Stats (Last 5 Matches)"])
@@ -52,27 +87,16 @@ page = st.sidebar.selectbox("Choose a section", ["Upcoming Matches & Odds", "Com
 if page == "Upcoming Matches & Odds":
     st.title("Upcoming Matches and Predictions")
 
-    # Sample data for predicted outcomes and odds (you can replace this with real data later)
+    # Sample data for predicted outcomes (you could replace this with a model's predictions)
     upcoming_matches = pd.DataFrame({
         'Home Team': ['Club Brugge', 'Anderlecht', 'Standard Liège'],
         'Away Team': ['Genk', 'Gent', 'Oostende'],
         'Prediction': ['Home Win', 'Draw', 'Away Win']
     })
 
-    match_odds = pd.DataFrame({
-        'Match': ['Club Brugge vs Genk', 'Anderlecht vs Gent', 'Standard Liège vs Oostende'],
-        'Home Win Odds': [2.1, 2.5, 1.9],
-        'Draw Odds': [3.3, 3.0, 3.5],
-        'Away Win Odds': [3.4, 2.9, 4.2]
-    })
-
     # Display predicted outcomes
     st.subheader("Predicted Outcomes for Upcoming Matches")
     st.table(upcoming_matches)
-
-    # Display odds
-    st.subheader("Match Outcome Odds")
-    st.table(match_odds)
 
 # Second section: Compare team stats over the last 5 matches
 elif page == "Compare Team Stats (Last 5 Matches)":
@@ -93,12 +117,16 @@ elif page == "Compare Team Stats (Last 5 Matches)":
         # Create two columns for side-by-side comparison
         col1, col2 = st.columns(2)
 
-        # Display the stats for Team 1
+        # Display the stats for Team 1 with the opaque background for readability
         with col1:
+            st.markdown('<div class="stats-container">', unsafe_allow_html=True)
             st.subheader(f"{team1} Stats")
-            st.table(team1_stats_df.set_index('Stat'))
+            st.dataframe(style_dataframe(team1_stats_df.set_index('Stat')))  # Using st.dataframe() to allow scrolling
+            st.markdown('</div>', unsafe_allow_html=True)
 
-        # Display the stats for Team 2
+        # Display the stats for Team 2 with the opaque background for readability
         with col2:
+            st.markdown('<div class="stats-container">', unsafe_allow_html=True)
             st.subheader(f"{team2} Stats")
-            st.table(team2_stats_df.set_index('Stat'))
+            st.dataframe(style_dataframe(team2_stats_df.set_index('Stat')))  # Using st.dataframe() to allow scrolling
+            st.markdown('</div>', unsafe_allow_html=True)
