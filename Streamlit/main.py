@@ -19,15 +19,25 @@ def load_data():
 # Load dataset
 df = load_data()
 
-# Encode 'HomeTeam' and 'AwayTeam'
+# Load upcoming matches from a new CSV file (from the image) for the 2024-2025 season
+upcoming_matches_df = pd.DataFrame({
+    'Date': ['20/09/2024', '21/09/2024', '21/09/2024', '21/09/2024', '22/09/2024', '22/09/2024', '22/09/2024', '22/09/2024'],
+    'HomeTeam': ['Standard', 'Beerschot VA', 'Westerlo', 'Anderlecht', 'Club Brugge', 'Mechelen', 'Genk', 'Oud-Heverlee Leuven'],
+    'AwayTeam': ['St. Gilloise', 'St Truiden', 'Antwerp', 'Charleroi', 'Gent', 'Cercle Brugge', 'Dender', 'Kortrijk']
+})
+
+# Encode 'HomeTeam', 'AwayTeam', and 'season'
 le_home = LabelEncoder()
 le_away = LabelEncoder()
+le_season = LabelEncoder()
+
 df['HomeTeam_encoded'] = le_home.fit_transform(df['HomeTeam'])
 df['AwayTeam_encoded'] = le_away.fit_transform(df['AwayTeam'])
+df['season_encoded'] = le_season.fit_transform(df['season'])
 
 # Prepare features and target variable for model
-features = ['HomeTeam_encoded', 'AwayTeam_encoded', 'HomeTeamStrength', 'AwayTeamStrength',
-            'avgHG', 'avgAG', 'avgHHG', 'avgHAG', 'avgHST', 'avgAST', 'avgHR', 'avgAR']
+features = ['season_encoded', 'HomeTeam_encoded', 'AwayTeam_encoded', 'HomeTeamStrength', 'AwayTeamStrength',
+            'avgHG', 'avgAG', 'avgHHG', 'avgHAG', 'avgHST', 'avgAST']
 X = df[features]
 y = df['FTR'].map({'H': 0, 'D': 1, 'A': 2})
 
@@ -35,17 +45,24 @@ y = df['FTR'].map({'H': 0, 'D': 1, 'A': 2})
 model = LogisticRegression(max_iter=1000)
 model.fit(X, y)
 
-# Function to predict outcome for upcoming matches
-def predict_outcome(home_team, away_team):
+# Function to predict outcome for upcoming matches in the 2024-2025 season
+def predict_outcome_2024(home_team, away_team):
     home_team_encoded = le_home.transform([home_team])[0]
     away_team_encoded = le_away.transform([away_team])[0]
     
-    team_data = df.loc[df['HomeTeam'] == home_team].iloc[0]
-    match_features = [[home_team_encoded, away_team_encoded,
-                      team_data['HomeTeamStrength'], team_data['AwayTeamStrength'],
-                      team_data['avgHG'], team_data['avgAG'], team_data['avgHHG'], team_data['avgHAG'],
-                      team_data['avgHST'], team_data['avgAST'], team_data['avgHR'], team_data['avgAR']]]
+    # Use a default season (2024-2025) for the prediction
+    season_encoded = le_season.transform(['S2024/2025'])[0]
     
+    team_data = df.loc[df['HomeTeam'] == home_team].iloc[0]
+    
+    # Create a DataFrame with the same feature names as the original training data
+    match_features = pd.DataFrame([[season_encoded, home_team_encoded, away_team_encoded,
+                                    team_data['HomeTeamStrength'], team_data['AwayTeamStrength'],
+                                    team_data['avgHG'], team_data['avgAG'], team_data['avgHHG'], 
+                                    team_data['avgHAG'], team_data['avgHST'], team_data['avgAST']]],
+                                  columns=features)
+    
+    # Make predictions
     prediction = model.predict(match_features)
     result_map = {0: 'Home Win', 1: 'Draw', 2: 'Away Win'}
     
@@ -173,23 +190,22 @@ st.title("Jupiler Pro-League App")
 st.sidebar.title("Navigation")
 page = st.sidebar.selectbox("Choose a section", ["Upcoming Matches & Predictions", "Compare Team Stats", "Team Rankings"])
 
-# Section 1: Upcoming Matches and Predictions
+# Section 1: Upcoming Matches and Predictions for the 2024-2025 season
 if page == "Upcoming Matches & Predictions":
-    st.header("Upcoming Matches and Predictions")
-
-    upcoming_matches = [
-        {"HomeTeam": "Club Brugge", "AwayTeam": "Genk"},
-        {"HomeTeam": "Anderlecht", "AwayTeam": "Gent"},
-        {"HomeTeam": "Standard", "AwayTeam": "Oostende"}
-    ]
+    st.header("Upcoming Matches and Predictions (S2024/2025)")
 
     predictions = []
-    for match in upcoming_matches:
-        result = predict_outcome(match["HomeTeam"], match["AwayTeam"])
-        predictions.append({"Home Team": match["HomeTeam"], "Away Team": match["AwayTeam"], "Prediction": result})
+    for _, match in upcoming_matches_df.iterrows():
+        result = predict_outcome_2024(match["HomeTeam"], match["AwayTeam"])
+        predictions.append({
+            "Date": match["Date"],
+            "Home Team": match["HomeTeam"], 
+            "Away Team": match["AwayTeam"], 
+            "Prediction": result
+        })
 
-    predicted_matches_df = pd.DataFrame(predictions)
-    st.table(predicted_matches_df)
+    predicted_matches = pd.DataFrame(predictions)
+    st.table(predicted_matches)
 
 # Section 2: Compare Team Stats over Last 5 Matches
 elif page == "Compare Team Stats":
@@ -234,5 +250,3 @@ elif page == "Team Rankings":
     st.write(f"Team Rankings for {selected_season}")
     stats_df = calculate_team_stats(season_df)
     st.dataframe(stats_df)
-
-   
