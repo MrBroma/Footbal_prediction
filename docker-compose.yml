@@ -69,7 +69,7 @@ services:
     image: apache/airflow:latest-python3.12
     container_name: airflow-scheduler
     environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_user:airflow_password@postgres/airflow_db
     volumes:
       - ./dags:/opt/airflow/dags

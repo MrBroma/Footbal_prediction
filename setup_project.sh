@@ -14,7 +14,7 @@ fi
 
 # Set permissions
 echo "Setting folder permissions..."
-chmod -R 777 dags logs plugins app ml data postgres_data
+sudo chmod -R 777 dags logs plugins app ml data postgres_data
 
 # Verify the permissions
 if [ $? -eq 0 ]; then
