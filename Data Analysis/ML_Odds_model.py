@@ -22,14 +22,14 @@ features = ['season_encoded', 'HomeTeam_encoded', 'AwayTeam_encoded', 'HomeTeamS
             'avgHG', 'avgAG', 'avgHHG', 'avgHAG', 'avgHST', 'avgAST']
 
 # Include the odds columns for regression target
-df_ML = df[features + ['BWH', 'BWA', 'BWD']]  # Assuming BWH, BWA, BWD are HomeOdds, AwayOdds, and DrawOdds
+df_ML = df[features + ['AvgH', 'AvgD', 'AvgA']]  # Assuming BWH, BWA, BWD are HomeOdds, AwayOdds, and DrawOdds
 
 # Remove any rows with missing values
 df_ML.dropna(inplace=True)
 
 # Define features (X) and target variables (y)
 X = df_ML[features]
-y = df_ML[['BWH', 'BWA', 'BWD']]  # Odds to predict
+y = df_ML[['AvgH', 'AvgD', 'AvgA']]  # Odds to predict
 
 # Split into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
