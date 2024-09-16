@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 # Cache the dataset loading
 @st.cache_data
 def load_data():
-    df = pd.read_csv('./Streamlit/ML_data.csv')  
+    df = pd.read_csv('ML_data.csv')  
     # Ensure 'Date' is in string format and 'Time' is in string format before concatenation
     df['Date'] = df['Date'].astype(str)
     df['Time'] = df['Time'].astype(str)
@@ -164,7 +164,7 @@ def get_base64_of_bin_file(bin_file):
     return base64.b64encode(data).decode()
 
 # Set the background image using the correct path
-set_background('./Streamlit/jupprolg.jpg')
+set_background('jupprolg.jpg')
 
 # Streamlit app layout
 st.title("Jupiler Pro-League App")

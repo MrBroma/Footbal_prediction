@@ -23,8 +23,8 @@ This is a teamwork project, aiming to develop a comprehensive system capable of 
 ## Data Preprocessing
 The entire DataFrame consists of 92 columns, which are structured but require significant cleaning, including the handling of null values.
 ### Data Cleaning
-The dataset uses abbreviated column names for efficiency. For example, "FTHG" stands for "Full Time Home Goals" and "FTAG" represents "Full Time Away Goals." A detailed explanation of all column names can be found in the official documentation at [this link](https://www.football-data.co.uk/notes.txt).
-Additionally, the dataset contained missing values for certain features, such as 'WHH', 'WHD', and 'WHA,' representing the William Hill bookmaker odds for Home Win, Draw, and Away Win, respectively. These features had over 300 missing values. Since our primary goal is to predict future match outcomes, for 'odds' part, we only focus on the 'AvgH', 'AvgD', and 'AvgA' columns, which represent the average odds from all bookmakers. These columns provide a more comprehensive and reliable representation of the odds landscape.
+The dataset uses abbreviated column names for efficiency. For example, "FTHG" stands for "Full Time Home Goals" and "FTAG" represents "Full Time Away Goals." A detailed explanation of all column names can be found in the official documentation at [this link](https://www.football-data.co.uk/notes.txt).  
+Additionally, the dataset contained missing values for certain features, such as 'WHH', 'WHD', and 'WHA,' representing the William Hill bookmaker odds for Home Win, Draw, and Away Win, respectively. These features had over 300 missing values. Since our primary goal is to predict future match outcomes, for 'odds' part, we only focus on the 'AvgH', 'AvgD', and 'AvgA' columns, which represent the average odds from all bookmakers. These columns provide a more comprehensive and reliable representation of the odds landscape.  
 Regarding the 'match stats' features, only a handful of rows contained missing data. Given the minimal number of affected rows (less than 10), it was no problem to drop them.
 
 ## Machine Learning
