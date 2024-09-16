@@ -31,7 +31,7 @@ def scrape_data():
             urls.append(full_url)
 
     # Loop through the URLs and download the first 5 CSV files
-    for link in urls[0:5]:
+    for link in urls[0:6]:
         # Request the CSV file
         response = requests.get(link)
         print(link)
