@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 
-df = pd.read_csv('ML_data.csv')
+df = pd.read_csv('ML_data_final.csv')
 
 # Encode 'HomeTeam' and 'AwayTeam'
 le_home = LabelEncoder()
@@ -69,8 +69,8 @@ def get_team_stats(df, season, home_team, away_team):
 
 # Example input parameters
 input_season = 'S2024/2025'
-input_home_team = 'Cercle Brugge'
-input_away_team = 'Genk'
+input_home_team = 'Club Brugge'
+input_away_team = 'Gent'
 
 # Dynamically retrieve stats for both teams
 team_stats = get_team_stats(df, input_season, input_home_team, input_away_team)

@@ -5,7 +5,7 @@ from sklearn.multioutput import MultiOutputRegressor
 from sklearn.metrics import mean_squared_error
 
 # Load the data
-df = pd.read_csv('ML_data.csv')
+df = pd.read_csv('ML_data_final.csv')
 
 # Encode 'HomeTeam' and 'AwayTeam'
 from sklearn.preprocessing import LabelEncoder
