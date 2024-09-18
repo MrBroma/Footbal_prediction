@@ -2,9 +2,5 @@ lxml
 beautifulsoup4
 pandas
 scikit-learn
-sqlalchemy
-psycopg2-binary
-streamlit
-apache-airflow
 streamlit
 sckitlearn
