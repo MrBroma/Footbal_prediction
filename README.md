@@ -31,7 +31,7 @@ Additionally, the dataset contained missing values for certain features, such as
 Regarding the 'match stats' features, only a handful of rows contained missing data. Given the minimal number of affected rows (less than 10), it was no problem to drop them.
 
 ## Machine Learning
-![Image Alt Text](/Figures/FTR.png)
+![Image Alt Text](/Figures/FTR.png)  
 We first briefly analyzed the distribution of the target column 'FTR'. As depicted in the figure above, the data clearly indicates a strong bias towards home team victories.
 ### Feature Selection
 Next, to select the most informative features for our machine learning model, I conducted statistical tests to assess their relevance to the target variable.This is a common challenge in applied machine learning where identifying truly relevant input features is crucial.
