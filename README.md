@@ -15,10 +15,11 @@ This is a teamwork project, aiming to develop a comprehensive system capable of 
 
 ## Data Acquisition
 ### Data Scriping
+Last season data: The data of the 5 last seasons CSV on https://www.football-data.co.uk/belgiumm.php were used.  
+Ongoing stats: Scraping of the ongoing day including future matches and odds.
 
 ### Data Base
-
-
+Creation of different stat tables in a database created with PostgresSQL.
 
 ## Data Preprocessing
 The entire DataFrame consists of 92 columns, which are structured but require significant cleaning, including the handling of null values.
@@ -116,7 +117,6 @@ Here are the results:
 | accuracy | | | 0.45 | 377 |
 | macro avg | 0.42 | 0.42 | 0.41 | 377 |
 | weighted avg | 0.43 | 0.45 | 0.43 | 377 |
-
 
 ## Streamlit Visualization
 
